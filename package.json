@@ -33,7 +33,6 @@
 		"test": "node ./out/test/runTest.js",
 		"vscode:prepublish": "npm run compile",
 		"package": "vsce package",
-		"publish": "vsce publish",
 		"release": "dotenv release-it --"
 	},
 	"devDependencies": {

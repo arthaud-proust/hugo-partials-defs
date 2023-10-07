@@ -1,11 +1,14 @@
 {
-  "git": {
-    "commitMessage": "chore: release v${version}"
-  },
-  "github": {
-    "release": true
-  },
-  "npm": {
-    "publish": false
-  }
+	"git": {
+		"commitMessage": "chore: release v${version}"
+	},
+	"github": {
+		"release": true
+	},
+	"npm": {
+		"publish": false
+	},
+	"hooks": {
+		"after:release": "vsce publish ${version} --no-update-package-json --no-git-tag-version"
+	}
 }
