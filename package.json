@@ -45,7 +45,7 @@
 		"@vscode/test-electron": "^2.3.0",
 		"dotenv-cli": "^7.3.0",
 		"eslint": "^8.26.0",
-		"glob": "^7.1.4",
+		"glob": "^10.3.10",
 		"mocha": "^10.2.0",
 		"release-it": "^16.2.1",
 		"source-map-support": "^0.5.12",
