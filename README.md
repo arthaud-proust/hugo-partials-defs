@@ -9,6 +9,7 @@ This VSCode extension give you the capabilities to Shift+Click on the import of 
 ## Roadmap
 
 - [x] Jump on a local definition
-- [ ] Config partials root directory (default /layouts/partials)
+- [x] Config partials root directory (default /layouts/partials)
+- [x] Search in multiple folders
 - [ ] Jump on a remote definition based on modules
 - [ ] Jump on a local replacement definition based on modules
