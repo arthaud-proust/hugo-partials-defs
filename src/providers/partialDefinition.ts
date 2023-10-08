@@ -5,8 +5,6 @@ import { message } from '../utils/message';
 import { partialPathFromDocumentLine } from '../utils/partials';
 import path = require('path');
 
-const defsFolderSearch = ['**/layouts/partials/'];
-
 function getRootFolder(): string | null {
 	if (vscode.workspace.workspaceFolders === undefined) {
 		vscode.window.showErrorMessage(
@@ -17,7 +15,28 @@ function getRootFolder(): string | null {
 	return vscode.workspace.workspaceFolders[0].uri.path;
 }
 
+function getFolderDefinitionsSearchPaths(): Array<string> {
+	const folderDefsSearch = vscode.workspace
+		.getConfiguration()
+		.get('hugoPartialsDefs.partialsFolder');
+
+	console.log(folderDefsSearch);
+
+	if (!folderDefsSearch || !Array.isArray(folderDefsSearch)) {
+		vscode.window.showErrorMessage(
+			message(
+				'Invalid hugoPartialsDefs.partialsFolder config value. Please fix the extension settings.'
+			)
+		);
+		throw new Error('Invalid hugoPartialsDefs.partialsFolder config value');
+	}
+
+	return folderDefsSearch;
+}
+
 function getDefinitionsFolders(rootFolder: string, partialPath: string): Array<string> {
+	const defsFolderSearch = getFolderDefinitionsSearchPaths();
+
 	const definitionsFolders = globSync(defsFolderSearch, {
 		cwd: rootFolder,
 	});

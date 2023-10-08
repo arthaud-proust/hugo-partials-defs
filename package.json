@@ -25,6 +25,20 @@
 		"onStartupFinished"
 	],
 	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": {
+			"title": "Hugo Partials Defs",
+			"properties": {
+				"hugoPartialsDefs.partialsFolder": {
+					"type": "array",
+					"default": [
+						"**/layouts/partials/"
+					],
+					"markdownDescription": "Where to search in workspace for partial files. Default: `**/layouts/partials/`"
+				}
+			}
+		}
+	},
 	"scripts": {
 		"compile": "tsc -p ./",
 		"lint": "eslint \"src/**/*.ts\"",
