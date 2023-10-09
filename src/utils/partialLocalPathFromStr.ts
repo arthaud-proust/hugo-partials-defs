@@ -1,24 +1,20 @@
+import config from '../extension.config';
 import { urlSegmentUntilPosition } from './url';
 
-export function partialPathFromDocumentLine(
-	documentLine?: string,
-	position?: number
-): string | null {
-	if (!documentLine || !position) {
+export function getPartialLocalPathFromStr(str?: string, position?: number): string | null {
+	if (!str || !position) {
 		return null;
 	}
 
-	const PARTIAL_FILEEXT = '.html';
-
 	const partialPrefix = `(partial ")`;
-	const partialPath = `((?:\\w|\\/)+)`;
-	const partialSuffix = `((?:\\${PARTIAL_FILEEXT})?")`;
+	const partialPath = `((?:\\w|\\/|-)+)`;
+	const partialSuffix = `((?:\\${config.partialFileExt})?")`;
 	const partialRegexp = RegExp(partialPrefix + partialPath + partialSuffix, 'g');
 
 	let match: string | null = null;
 	let matches: RegExpExecArray | null = null;
 
-	while ((matches = partialRegexp.exec(documentLine)) !== null && match === null) {
+	while ((matches = partialRegexp.exec(str)) !== null && match === null) {
 		if (!matches.length || !matches[0]) {
 			continue;
 		}
@@ -36,17 +32,14 @@ export function partialPathFromDocumentLine(
 			continue;
 		}
 
-		if (path.endsWith('/')) {
+		const localPosition = position - pathStartPosition;
+		const selectedPath = urlSegmentUntilPosition(path, localPosition);
+
+		if (!selectedPath || selectedPath.endsWith('/')) {
 			continue;
 		}
 
-		const pathWithExtension = path + PARTIAL_FILEEXT;
-		const localPosition = position - pathStartPosition;
-		const selectedPath = urlSegmentUntilPosition(pathWithExtension, localPosition);
-
-		if (selectedPath?.endsWith(PARTIAL_FILEEXT)) {
-			match = selectedPath;
-		}
+		match = selectedPath;
 	}
 
 	return match;

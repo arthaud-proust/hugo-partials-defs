@@ -20,39 +20,42 @@ suite('urlSegmentUntilPosition', () => {
 		assert.strictEqual(output, null);
 	});
 
-	test('should return foo', () => {
-		const output = urlSegmentUntilPosition('foo', 0);
+	test('should return first segment with trailing slash when position at 0', () => {
+		const forOneSegment = urlSegmentUntilPosition('foo', 0);
+		assert.strictEqual(forOneSegment, 'foo');
 
-		assert.strictEqual(output, 'foo');
+		const forTwoSegments = urlSegmentUntilPosition('foo/bar', 0);
+		assert.strictEqual(forTwoSegments, 'foo/');
+
+		const forOneSegmentTrailing = urlSegmentUntilPosition('foo/', 0);
+		assert.strictEqual(forOneSegmentTrailing, 'foo/');
+
+		const forThreeSegments = urlSegmentUntilPosition('foo/bar/buzz', 0);
+		assert.strictEqual(forThreeSegments, 'foo/');
 	});
 
-	test('should return foo', () => {
-		const output = urlSegmentUntilPosition('foo', 3);
+	test('should return first segment with trailing slash when position at end of first segment', () => {
+		const forOneSegment = urlSegmentUntilPosition('foo', 3);
+		assert.strictEqual(forOneSegment, 'foo');
 
-		assert.strictEqual(output, 'foo');
+		const forTwoSegments = urlSegmentUntilPosition('foo/bar', 3);
+		assert.strictEqual(forTwoSegments, 'foo/');
+
+		const forOneSegmentTrailing = urlSegmentUntilPosition('foo/', 3);
+		assert.strictEqual(forOneSegmentTrailing, 'foo/');
+
+		const forThreeSegments = urlSegmentUntilPosition('foo/bar/buzz', 3);
+		assert.strictEqual(forThreeSegments, 'foo/');
 	});
 
-	test('should return foo', () => {
-		const output = urlSegmentUntilPosition('foo/bar', 3);
+	test('should return first and second segment with trailing slash when position at start of second segment', () => {
+		const forTwoSegments = urlSegmentUntilPosition('foo/bar', 4);
+		assert.strictEqual(forTwoSegments, 'foo/bar');
 
-		assert.strictEqual(output, 'foo');
-	});
+		const forTwoSegmentsTrailing = urlSegmentUntilPosition('foo/bar/', 4);
+		assert.strictEqual(forTwoSegmentsTrailing, 'foo/bar/');
 
-	test('should return foo/bar', () => {
-		const output = urlSegmentUntilPosition('foo/bar', 4);
-
-		assert.strictEqual(output, 'foo/bar');
-	});
-
-	test('should return foo/bar', () => {
-		const output = urlSegmentUntilPosition('foo/bar/buzz', 4);
-
-		assert.strictEqual(output, 'foo/bar');
-	});
-
-	test('should return foo/bar/buzz', () => {
-		const output = urlSegmentUntilPosition('foo/bar/buzz', 8);
-
-		assert.strictEqual(output, 'foo/bar/buzz');
+		const forThreeSegments = urlSegmentUntilPosition('foo/bar/buzz', 4);
+		assert.strictEqual(forThreeSegments, 'foo/bar/');
 	});
 });
