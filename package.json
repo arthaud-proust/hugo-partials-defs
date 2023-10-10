@@ -22,7 +22,7 @@
 	],
 	"icon": "media/icon.png",
 	"activationEvents": [
-		"onStartupFinished"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -37,6 +37,17 @@
 					"markdownDescription": "Where to search in workspace for partial files. Default: `**/layouts/partials/`"
 				}
 			}
+		},
+		"commands": [
+			{
+				"command": "hugoPartialsDefs.partialsFolders",
+				"title": "Get partials folders found"
+			}
+		]
+	},
+	"capabilities": {
+		"untrustedWorkspaces": {
+			"supported": true
 		}
 	},
 	"scripts": {
