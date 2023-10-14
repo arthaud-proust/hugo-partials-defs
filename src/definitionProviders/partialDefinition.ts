@@ -15,7 +15,6 @@ export const partialDefinitionProdiver = vscode.languages.registerDefinitionProv
 				documentLine,
 				position.character
 			);
-			console.log(partialLocalPath);
 
 			if (!partialLocalPath) {
 				return undefined;

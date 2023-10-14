@@ -1,7 +1,8 @@
 import { globSync } from 'glob';
 import * as vscode from 'vscode';
 import { message } from './message';
-import { getRootFolder } from './rootFolder';
+import { getRootFolders } from './rootFolders';
+import path = require('path');
 
 function getFolderDefinitionsSearchPaths(): Array<string> {
 	const folderDefsSearch = vscode.workspace
@@ -20,22 +21,24 @@ function getFolderDefinitionsSearchPaths(): Array<string> {
 }
 
 export function getDefinitionsFolders(): Array<string> {
-	const rootFolder = getRootFolder();
-	if (!rootFolder) {
+	const rootFolders = getRootFolders();
+	if (!rootFolders) {
 		return [];
 	}
 
-	try {
-		const defsFolderSearch = getFolderDefinitionsSearchPaths();
+	return rootFolders.flatMap((rootFolder) => {
+		try {
+			const defsFolderSearch = getFolderDefinitionsSearchPaths();
 
-		return globSync(defsFolderSearch, {
-			cwd: rootFolder,
-		});
-	} catch (e) {
-		const msg = message(
-			'Unable to find partials folders. Please check hugoPartialsDefs.partialsFolder config value in extension settings.'
-		);
-		vscode.window.showErrorMessage(msg);
-		throw new Error(msg);
-	}
+			return globSync(defsFolderSearch, {
+				cwd: rootFolder,
+			}).map((partialFolder) => path.join(rootFolder, partialFolder));
+		} catch (e) {
+			const msg = message(
+				'Unable to find partials folders. Please check hugoPartialsDefs.partialsFolder config value in extension settings.'
+			);
+			vscode.window.showErrorMessage(msg);
+			throw new Error(msg);
+		}
+	});
 }
